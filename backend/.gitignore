@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+
+# Build
+dist/
+build/
+
+
+tests
+jest.config.js
+scripts/createAdmin.js
