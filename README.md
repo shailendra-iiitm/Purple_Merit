@@ -15,20 +15,28 @@ Full-stack user management with JWT authentication and role-based access control
 - Activate/deactivate users (admin only)
 - Pagination, validation, protected routes
 
-## Quick Start
+## Deployment
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for complete deployment instructions for:
+- **Frontend**: Vercel
+- **Backend**: Render
+- **Database**: MongoDB Atlas
+
+## Quick Start (Local Development)
 
 ```bash
 # Backend
 cd backend && npm install
+cp .env.example .env  # Configure your environment
 npm run dev          # Port 5000
-npm run create-admin # Create admin
+npm run create-admin # Create admin user
 
 # Frontend
 cd frontend && npm install
 npm run dev          # Port 5173
 ```
 
-**Admin:** admin@example.com / Admin@12345
+**Default Admin:** admin@example.com / Admin@12345
 
 ## API Endpoints
 
