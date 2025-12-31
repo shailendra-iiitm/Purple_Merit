@@ -6,7 +6,8 @@ const api = axios.create({
   baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json'
-  }
+  },
+  withCredentials: false
 });
 
 // Add token to requests
@@ -19,6 +20,32 @@ api.interceptors.request.use(
     return config;
   },
   (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Handle 401 errors (invalid/expired tokens)
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Log the error for debugging
+      console.error('401 Unauthorized Error:', {
+        url: error.config?.url,
+        method: error.config?.method,
+        message: error.response?.data?.message,
+        token: localStorage.getItem('token') ? 'Present' : 'Missing'
+      });
+      
+      // Only auto-logout for auth endpoints, not for other protected routes
+      // This allows us to see the actual error message
+      if (error.config?.url?.includes('/auth/')) {
+        localStorage.removeItem('token');
+        if (!window.location.pathname.includes('/login')) {
+          window.location.href = '/login';
+        }
+      }
+    }
     return Promise.reject(error);
   }
 );

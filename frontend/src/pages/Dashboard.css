@@ -371,6 +371,7 @@
   transition: all 0.3s ease;
   box-sizing: border-box;
   background: #f9fafb;
+  color: #1f2937;
 }
 
 .form-group input:hover {
@@ -383,6 +384,7 @@
   border-color: #2563eb;
   background: white;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  color: #1f2937;
 }
 
 .form-group input::placeholder {

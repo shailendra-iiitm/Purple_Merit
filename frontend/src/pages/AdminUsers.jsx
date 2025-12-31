@@ -17,12 +17,18 @@ const AdminUsers = () => {
     setLoading(true);
     setError('');
     try {
+      const token = localStorage.getItem('token');
+      console.log('Fetching users with token:', token ? `${token.substring(0, 20)}...` : 'NO TOKEN');
       const response = await userAPI.getAllUsers(page, 10);
       console.log('API Response:', response.data);
       console.log('Users:', response.data.data.users);
       setUsers(response.data.data.users);
       setPagination(response.data.data.pagination);
     } catch (err) {
+      console.error('Full error object:', err);
+      console.error('Error response:', err.response);
+      console.error('Error status:', err.response?.status);
+      console.error('Error message:', err.response?.data?.message);
       setError(err.response?.data?.message || 'Failed to fetch users');
     } finally {
       setLoading(false);

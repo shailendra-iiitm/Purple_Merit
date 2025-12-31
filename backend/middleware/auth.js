@@ -24,6 +24,7 @@ exports.protect = async (req, res, next) => {
 
     try {
       // Decode and verify token using the secret key
+      console.log('Verifying token with secret:', process.env.JWT_SECRET ? 'Secret exists' : 'Secret missing');
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
       // Fetch user linked to the token and attach to request object
@@ -47,6 +48,7 @@ exports.protect = async (req, res, next) => {
       req.user = user;
       next();
     } catch (error) {
+      console.error('JWT Verification Error:', error.message);
       return res.status(401).json({
         success: false,
         message: 'Invalid or expired token. Please login again.'
@@ -63,6 +65,20 @@ exports.protect = async (req, res, next) => {
 // Allow access only for specific user roles
 exports.authorize = (...roles) => {
   return (req, res, next) => {
+    console.log('Authorize middleware check:', {
+      requiredRoles: roles,
+      userRole: req.user?.role,
+      userId: req.user?._id,
+      userEmail: req.user?.email
+    });
+    
+    if (!req.user || !req.user.role) {
+      return res.status(401).json({
+        success: false,
+        message: 'User not authenticated or role missing'
+      });
+    }
+    
     if (!roles.includes(req.user.role)) {
       return res.status(403).json({
         success: false,
